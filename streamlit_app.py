@@ -155,9 +155,9 @@ def visualize_classifier(classifier, X, y, title=''):
 
     
     st.pyplot(fig)
-
+"""
 def generate_random_points_in_square(x_min, x_max, y_min, y_max, num_points):
-    """
+    
     Generates a NumPy array of random points within a specified square region.
 
     Args:
