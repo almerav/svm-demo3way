@@ -76,7 +76,7 @@ def app():
         max_value=6,
         value=2,  # Initial value
     )
-
+"""
     # Create the selecton of classifier
     clf = GaussianNB() 
     options = ['Logistic Regression', 'Naive Bayes', 'Support Vector Machine']
