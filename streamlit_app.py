@@ -76,7 +76,7 @@ def app():
         max_value=6,
         value=2,  # Initial value
     )
-"""
+
     # Create the selecton of classifier
     clf = GaussianNB() 
     options = ['Logistic Regression', 'Naive Bayes', 'Support Vector Machine']
@@ -91,7 +91,7 @@ def app():
         clf = svm.SVC(kernel='linear', C=1000)
     else:
         clf = GaussianNB()
-        
+    """        
     if st.button('Start'):
         centers = generate_random_points_in_square(-4, 4, -4, 4, n_clusters)
         X, y = make_blobs(n_samples=n_samples, n_features=2,
@@ -114,7 +114,7 @@ def app():
         st.subheader('VIsualization')
         visualize_classifier(clf, X_test, y_test_pred)
         st.session_state['new_cluster'] = False
-
+    """
 def visualize_classifier(classifier, X, y, title=''):
     # Define the minimum and maximum values for X and Y
     # that will be used in the mesh grid
@@ -155,7 +155,7 @@ def visualize_classifier(classifier, X, y, title=''):
 
     
     st.pyplot(fig)
-"""
+
 def generate_random_points_in_square(x_min, x_max, y_min, y_max, num_points):
     
     Generates a NumPy array of random points within a specified square region.
