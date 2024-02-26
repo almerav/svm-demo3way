@@ -91,7 +91,7 @@ def app():
         clf = svm.SVC(kernel='linear', C=1000)
     else:
         clf = GaussianNB()
-    """        
+    """    
     if st.button('Start'):
         centers = generate_random_points_in_square(-4, 4, -4, 4, n_clusters)
         X, y = make_blobs(n_samples=n_samples, n_features=2,
@@ -157,7 +157,7 @@ def visualize_classifier(classifier, X, y, title=''):
     st.pyplot(fig)
 
 def generate_random_points_in_square(x_min, x_max, y_min, y_max, num_points):
-    
+    """
     Generates a NumPy array of random points within a specified square region.
 
     Args:
