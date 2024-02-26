@@ -76,22 +76,18 @@ def app():
         max_value=6,
         value=2,  # Initial value
     )
-    """"
-    # Create the selecton of classifier
-    clf = GaussianNB() 
-    options = ['Logistic Regression', 'Naive Bayes', 'Support Vector Machine']
-    selected_option = st.selectbox('Select the classifier', options)
-    if selected_option =='Logistic Regression':
-        clf = LogisticRegression(C=1.0, class_weight=None, 
-            dual=False, fit_intercept=True,
-            intercept_scaling=1, max_iter=100, multi_class='auto',
-            n_jobs=1, penalty='l2', random_state=42, solver='lbfgs',
-            tol=0.0001, verbose=0, warm_start=False)
-    elif selected_option=='Support Vector Machine':
-        clf = svm.SVC(kernel='linear', C=1000)
-    else:
-        clf = GaussianNB()
-    """    
+    
+    # Instantiate all three classifiers
+    clf_log_reg = LogisticRegression(C=1.0, class_weight=None, 
+        dual=False, fit_intercept=True,
+        intercept_scaling=1, max_iter=100, multi_class='auto',
+        n_jobs=1, penalty='l2', random_state=42, solver='lbfgs',
+        tol=0.0001, verbose=0, warm_start=False)
+    
+    clf_naive_bayes = GaussianNB()
+    
+    clf_svm = svm.SVC(kernel='linear', C=1000)
+    
     if st.button('Start'):
         centers = generate_random_points_in_square(-4, 4, -4, 4, n_clusters)
         X, y = make_blobs(n_samples=n_samples, n_features=2,
@@ -102,18 +98,34 @@ def app():
         X_train, X_test, y_train, y_test = train_test_split(X, y, \
             test_size=0.2, random_state=42)
         
-        clf.fit(X_train,y_train)
-        y_test_pred = clf.predict(X_test)
-        st.subheader('Confusion Matrix')
-
-        st.write('Confusion Matrix')
-        cm = confusion_matrix(y_test, y_test_pred)
-        st.text(cm)
-        st.subheader('Performance Metrics')
-        st.text(classification_report(y_test, y_test_pred))
-        st.subheader('VIsualization')
-        visualize_classifier(clf, X_test, y_test_pred)
+        # Train and evaluate Logistic Regression
+        clf_log_reg.fit(X_train,y_train)
+        y_test_pred_log_reg = clf_log_reg.predict(X_test)
+        st.subheader('Logistic Regression Results')
+        display_results(clf_log_reg, X_test, y_test, y_test_pred_log_reg)
+        
+        # Train and evaluate Naive Bayes
+        clf_naive_bayes.fit(X_train,y_train)
+        y_test_pred_naive_bayes = clf_naive_bayes.predict(X_test)
+        st.subheader('Naive Bayes Results')
+        display_results(clf_naive_bayes, X_test, y_test, y_test_pred_naive_bayes)
+        
+        # Train and evaluate Support Vector Machine
+        clf_svm.fit(X_train,y_train)
+        y_test_pred_svm = clf_svm.predict(X_test)
+        st.subheader('Support Vector Machine Results')
+        display_results(clf_svm, X_test, y_test, y_test_pred_svm)
         st.session_state['new_cluster'] = False
+    
+def display_results(classifier, X_test, y_test, y_test_pred):
+    st.write('Confusion Matrix')
+    cm = confusion_matrix(y_test, y_test_pred)
+    st.text(cm)
+    st.subheader('Performance Metrics')
+    st.text(classification_report(y_test, y_test_pred))
+    st.subheader('Visualization')
+    visualize_classifier(classifier, X_test, y_test_pred)
+    st.session_state['new_cluster'] = False
     
 def visualize_classifier(classifier, X, y, title=''):
     # Define the minimum and maximum values for X and Y
